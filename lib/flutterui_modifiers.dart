@@ -192,7 +192,7 @@ extension FlutterUIModifiers on Widget {
   }
 
   /// Clips the widget.
-  Container backgroundColor(Color color) {
+  Widget backgroundColor(Color? color) {
     return Container(child: this, color: color);
   }
 
@@ -204,8 +204,8 @@ extension FlutterUIModifiers on Widget {
   /// Icon(Icons.person)
   ///     .clipOval();
   /// ```
-  Widget clipOval(
-    CustomClipper<Rect>? clipper, {
+  Widget clipOval({
+    CustomClipper<Rect>? clipper,
     Clip behavior: Clip.antiAlias,
   }) {
     return ClipOval(child: this, clipper: clipper, clipBehavior: behavior);
@@ -219,8 +219,8 @@ extension FlutterUIModifiers on Widget {
   /// Icon(Icons.person)
   ///     .clipPath();
   /// ```
-  Widget clipPath(
-    CustomClipper<Path>? clipper, {
+  Widget clipPath({
+    CustomClipper<Path>? clipper,
     Clip behavior: Clip.antiAlias,
   }) {
     return ClipPath(child: this, clipper: clipper, clipBehavior: behavior);
@@ -234,8 +234,8 @@ extension FlutterUIModifiers on Widget {
   /// Icon(Icons.person)
   ///     .clipRect();
   /// ```
-  Widget clipRect(
-    CustomClipper<Rect>? clipper, {
+  Widget clipRect({
+    CustomClipper<Rect>? clipper,
     Clip behavior: Clip.hardEdge,
   }) {
     return ClipRect(child: this, clipper: clipper, clipBehavior: behavior);
@@ -249,7 +249,7 @@ extension FlutterUIModifiers on Widget {
   /// Icon(Icons.person)
   ///     .corner(12);
   /// ```
-  Container corner(double radius) {
+  Widget corner(double radius) {
     return Container(
       child: this,
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(radius)),
@@ -288,8 +288,8 @@ extension FlutterUIModifiers on Widget {
   ///       .padding(all: 16),
   /// )
   /// ```
-  Container margin(
-    double? all, {
+  Widget margin({
+    double? all,
     double? top,
     double? bottom,
     double? leading,
@@ -335,8 +335,8 @@ extension FlutterUIModifiers on Widget {
   ///       .padding(all: 16),
   /// )
   /// ```
-  Widget padding(
-    double? all, {
+  Widget padding({
+    double? all,
     double? top,
     double? bottom,
     double? leading,

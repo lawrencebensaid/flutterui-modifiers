@@ -1,6 +1,6 @@
 name: flutterui_modifiers
-description: A collection of declarative widget modifiers to make your Flutter code shorter and linear.
-version: 0.0.1
+description: FlutterUI Modifiers is a collection of declarative widget modifiers to make your Flutter code shorter and linear.
+version: 0.0.2
 author: Lawrence Bensaid <lawrencebensaid@icloud.com>
 homepage: https://github.com/lawrencebensaid/flutterui-modifiers
 

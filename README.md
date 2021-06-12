@@ -1,6 +1,6 @@
 # FlutterUI Modifiers
 
-A collection of declarative widget modifiers to make your Flutter code shorter and linear.
+FlutterUI Modifiers is a collection of declarative widget modifiers to make your Flutter code shorter and linear.
 
 Modern tools like Jetpack Compose and SwiftUI use modifiers to make code easy to write and understand.
 

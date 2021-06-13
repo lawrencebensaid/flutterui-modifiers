@@ -1,143 +1,18 @@
 library flutterui_modifiers;
 
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
-extension FlutterUITextModifiers on Text {
-  /// A modifier that sets its Text's color.
-  ///
-  /// ## Example:
-  ///
-  /// ```dart
-  /// Text('Hello, World!')
-  ///     .color(Colors.red);
-  /// ```
-  Text color(Color color) {
-    return this.styling(color: color);
-  }
+export 'Button.dart';
+export 'Icon.dart';
+export 'Text.dart';
+export 'TextField.dart';
 
-  /// A modifier that sets its Text's font.
-  ///
-  /// ## Example:
-  ///
-  /// ```dart
-  /// Text('Hello, World!')
-  ///     .font(size: 18);
-  /// ```
-  Text font({
-    double? size,
-    FontWeight? weight,
-    FontStyle? style,
-    String? family,
-    List<String>? familyFallback,
-  }) {
-    return this.styling(
-      fontSize: size,
-      fontWeight: weight,
-      fontStyle: style,
-      fontFamily: family,
-      fontFamilyFallback: familyFallback,
-    );
-  }
-
-  /// Internal modifier for styling.
-  Text styling({
-    bool? inherit,
-    Color? color,
-    Color? backgroundColor,
-    double? fontSize,
-    FontWeight? fontWeight,
-    FontStyle? fontStyle,
-    double? letterSpacing,
-    double? wordSpacing,
-    TextBaseline? textBaseline,
-    double? height,
-    TextLeadingDistribution? leadingDistribution,
-    Locale? locale,
-    Paint? foreground,
-    Paint? background,
-    List<Shadow>? shadows,
-    List<FontFeature>? fontFeatures,
-    TextDecoration? decoration,
-    Color? decorationColor,
-    TextDecorationStyle? decorationStyle,
-    double? decorationThickness,
-    String? debugLabel,
-    String? fontFamily,
-    List<String>? fontFamilyFallback,
-  }) {
-    return Text(
-      this.data ?? '',
-      style: TextStyle(
-        inherit: inherit ?? this.style?.inherit ?? true,
-        color: color ?? this.style?.color,
-        backgroundColor: backgroundColor ?? this.style?.backgroundColor,
-        fontSize: fontSize ?? this.style?.fontSize,
-        fontWeight: fontWeight ?? this.style?.fontWeight,
-        fontStyle: fontStyle ?? this.style?.fontStyle,
-        letterSpacing: letterSpacing ?? this.style?.letterSpacing,
-        wordSpacing: wordSpacing ?? this.style?.wordSpacing,
-        textBaseline: textBaseline ?? this.style?.textBaseline,
-        height: height ?? this.style?.height,
-        leadingDistribution:
-            leadingDistribution ?? this.style?.leadingDistribution,
-        locale: locale ?? this.style?.locale,
-        foreground: foreground ?? this.style?.foreground,
-        background: background ?? this.style?.background,
-        shadows: shadows ?? this.style?.shadows,
-        fontFeatures: fontFeatures ?? this.style?.fontFeatures,
-        decoration: decoration ?? this.style?.decoration,
-        decorationColor: decorationColor ?? this.style?.decorationColor,
-        decorationStyle: decorationStyle ?? this.style?.decorationStyle,
-        decorationThickness:
-            decorationThickness ?? this.style?.decorationThickness,
-        debugLabel: debugLabel ?? this.style?.debugLabel,
-        fontFamily: fontFamily ?? this.style?.fontFamily,
-        fontFamilyFallback:
-            fontFamilyFallback ?? this.style?.fontFamilyFallback,
-      ),
-    );
-  }
-}
-
-extension FlutterUIButtonModifiers on Button {
-  /// A modifier that sets its Button's onLongPress handler.
-  ///
-  /// ## Example:
-  ///
-  /// ```dart
-  /// Button(child: Text("Tap me for long"))
-  ///     .onLongPress(() => print("Tapped!"));
-  /// ```
-  Button onLongPress(VoidCallback perform) {
-    return Button(
-      child: this.child,
-      style: this.style,
-      onPressed: this.onPressed,
-      onLongPressed: perform,
-    );
-  }
-
-  /// A modifier that sets its Button's onPress handler.
-  ///
-  /// ## Example:
-  ///
-  /// ```dart
-  /// Button(child: Text("Tap me"))
-  ///     .onPress(() => print("Tapped!"));
-  /// ```
-  Button onPress(VoidCallback perform) {
-    return Button(
-      child: this.child,
-      style: this.style,
-      onPressed: perform,
-      onLongPressed: this.onLongPress,
-    );
-  }
-}
-
-extension FlutterUIModifiers on Widget {
+/// Contains the modifier members of the [Widget] class.
+///
+/// The reason that [FlutterUIModifiersWidget] resides inside this file is
+/// because it depends on the `_rebase()` method of
+/// [FlutterUIModifiersContainer] which is fileprivate.
+extension FlutterUIModifiersWidget on Widget {
   /// A modifier that aligns its widget within itself and optionally sizes itself
   /// based on the widget's size.
   ///
@@ -191,8 +66,18 @@ extension FlutterUIModifiers on Widget {
     );
   }
 
-  /// Clips the widget.
+  /// A modifier that sets its widget's backgruond color
+  ///
+  /// ## Example:
+  ///
+  /// ```dart
+  /// Text('Black text')
+  ///     .backgroundColor(Colors.white)
+  ///```
   Widget backgroundColor(Color? color) {
+    if (this is Container) {
+      return (this as Container).backgroundColor(color);
+    }
     return Container(child: this, color: color);
   }
 
@@ -250,10 +135,7 @@ extension FlutterUIModifiers on Widget {
   ///     .corner(12);
   /// ```
   Widget corner(double radius) {
-    return Container(
-      child: this,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(radius)),
-    );
+    return ClipRRect(child: this, borderRadius: BorderRadius.circular(radius));
   }
 
   /// A modifier that sets its widget's frame size.
@@ -264,15 +146,11 @@ extension FlutterUIModifiers on Widget {
   /// Icon(Icons.person)
   ///     .frame(width: 50, height: 25);
   /// ```
-  Widget frame({
-    double? width,
-    double? height,
-  }) {
-    return SizedBox(
-      child: this,
-      width: width,
-      height: height,
-    );
+  Widget frame({double? width, double? height}) {
+    if (this is Container) {
+      return (this as Container).frame(width: width, height: height);
+    }
+    return Container(child: this, width: width, height: height);
   }
 
   /// A modifier that insets margin around its widget by the given value(s).
@@ -309,15 +187,16 @@ extension FlutterUIModifiers on Widget {
     _trailing += horizontal ?? 0;
     _top += vertical ?? 0;
     _bottom += vertical ?? 0;
-    return Container(
-      child: this,
-      margin: EdgeInsets.only(
-        left: _leading,
-        top: _top,
-        right: _trailing,
-        bottom: _bottom,
-      ),
+    final insets = EdgeInsets.only(
+      top: _top,
+      bottom: _bottom,
+      left: _leading,
+      right: _trailing,
     );
+    if (this is Container) {
+      return (this as Container)._rebase(margin: insets);
+    }
+    return Container(child: this, margin: insets);
   }
 
   /// A modifier that insets its widget by the given padding.
@@ -356,15 +235,16 @@ extension FlutterUIModifiers on Widget {
     _trailing += horizontal ?? 0;
     _top += vertical ?? 0;
     _bottom += vertical ?? 0;
-    return Padding(
-      child: this,
-      padding: EdgeInsets.only(
-        top: _top,
-        bottom: _bottom,
-        left: _leading,
-        right: _trailing,
-      ),
+    final insets = EdgeInsets.only(
+      top: _top,
+      bottom: _bottom,
+      left: _leading,
+      right: _trailing,
     );
+    if (this is Container) {
+      return (this as Container)._rebase(padding: insets);
+    }
+    return Padding(child: this, padding: insets);
   }
 
   /// A modifier that makes its widget (partially) transparent.
@@ -440,21 +320,77 @@ extension FlutterUIModifiers on Widget {
   }
 }
 
-class Button extends TextButton {
-  final Widget child;
-  final ButtonStyle? style;
-  final VoidCallback? onPressed;
-  final VoidCallback? onLongPressed;
+/// Contains the modifier members of the [Container] class.
+///
+/// The reason that [FlutterUIModifiersContainer] resides inside this file is
+/// because it provides the `_rebase()` method of which is fileprivate.
+extension FlutterUIModifiersContainer on Container {
+  /// A modifier that sets its widget's background color
+  ///
+  /// ## Example:
+  ///
+  /// ```dart
+  /// Text('Black text')
+  ///     .backgroundColor(Colors.white)
+  ///```
+  Container backgroundColor(Color? color) {
+    return _rebase(color: color);
+  }
 
-  Button({
-    required this.child,
-    this.style,
-    this.onPressed,
-    this.onLongPressed,
-  }) : super(
-          child: child,
-          style: style,
-          onPressed: onPressed ?? () {},
-          onLongPress: onLongPressed,
-        );
+  /// A modifier that clips its widget's corners to the specified radius.
+  ///
+  /// ## Example
+  ///
+  /// ```dart
+  /// Icon(Icons.person)
+  ///     .corner(12);
+  /// ```
+  Container decorate(Decoration? decoration) {
+    return _rebase(decoration: decoration);
+  }
+
+  /// A modifier that sets its widget's frame size.
+  ///
+  /// ## Example:
+  ///
+  /// ```dart
+  /// Icon(Icons.person)
+  ///     .frame(width: 50, height: 25);
+  /// ```
+  Container frame({double? width, double? height}) {
+    return _rebase(width: width, height: height);
+  }
+
+  /// Internal modifier for modifying final properties.
+  Container _rebase({
+    AlignmentGeometry? alignment,
+    EdgeInsetsGeometry? padding,
+    Color? color,
+    Decoration? decoration,
+    Decoration? foregroundDecoration,
+    double? width,
+    double? height,
+    BoxConstraints? constraints,
+    EdgeInsetsGeometry? margin,
+    Matrix4? transform,
+    AlignmentGeometry? transformAlignment,
+    Clip? clipBehavior,
+  }) {
+    return Container(
+      key: this.key,
+      alignment: alignment ?? this.alignment,
+      padding: padding ?? this.padding,
+      color: color ?? this.color,
+      decoration: decoration ?? this.decoration,
+      foregroundDecoration: foregroundDecoration ?? this.foregroundDecoration,
+      width: width,
+      height: height,
+      constraints: constraints ?? this.constraints,
+      margin: margin ?? this.margin,
+      transform: transform ?? this.transform,
+      transformAlignment: transformAlignment ?? this.transformAlignment,
+      child: this.child,
+      clipBehavior: clipBehavior ?? this.clipBehavior,
+    );
+  }
 }

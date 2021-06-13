@@ -2,7 +2,7 @@
 
 FlutterUI Modifiers is a collection of declarative widget modifiers to make your Flutter code shorter and linear.
 
-Modern tools like Jetpack Compose and SwiftUI use modifiers to make code easy to write and understand.
+Modern tools like Jetpack Compose and SwiftUI use view modifiers to make code easy to write and understand.
 
 **This package provides the best of both worlds: Flutter's platform independence, and SwiftUI's clean modifier syntax.**
 
@@ -63,35 +63,78 @@ list.add(
 
 ## List of modifiers
 
-All modifiers contain in-code comment documentation with examples.
+All view modifiers contain in-code comment documentation with examples.
 
-Please note that some modifiers are specific to widgets like `Text()` or various Buttons and will not work on other widgets that don't support them.
+Please note that some view modifiers are specific to widgets like `Text()` or various Buttons and will not work on other widgets that don't support them.
 
 |Status|Modifier|Widget(s)|
 |-|-|-|
-|✅|`align()`|*|
-|✅|`aspectRatio()`|*|
-|✅|`assign()`|*|
-|✅|`centered()`|*|
-|✅|`backgroundColor()`|*|
-|✅|`clipOval()`|*|
-|✅|`clipPath()`|*|
-|✅|`clipRect()`|*|
-|✅|`color()`|`Text`|
-|✅|`font()`|`Text`|
-|✅|`frame()`|*|
-|✅|`margin()`|*|
-|✅|`onLongPress()`|`Button`|
-|✅|`onPress()`|`Button`|
-|✅|`opacity()`|*|
-|✅|`padding()`|*|
-|✅|`rotate()`|*|
-|✅|`scale()`|*|
-|✅|`transform()`|*|
-|✅|`translate()`|*|
+|🟢|`align()`|*|
+|🟢|`aspectRatio()`|*|
+|🟢|`assign()`|*|
+|🟢|`centered()`|*|
+|🔴|`controlSize()`|`Button`, `TextField`|
+|🟠|`background()`|*|
+|🟡|`backgroundColor()`|*|
+|🟠|`border()`|*|
+|🟡|`clipOval()`|*|
+|🟡|`clipPath()`|*|
+|🟡|`clipRect()`|*|
+|🟠|`clip()`|*|
+|🟢|`color()`|`Text`|
+|🟢|`corner()`|*|
+|🟢|`decorate()`|`Container`|
+|🟢|`direction()`|`Icon`, `Text`|
+|🟢|`disabled()`|`Button`|
+|🟢|`font()`|`Icon`, `Text`|
+|🟢|`frame()`|*|
+|🔴|`help()`|*|
+|🟢|`margin()`|*|
+|🟢|`multilineTextAlignment()`|`Text`|
+|🟠|`onDrag()`|*|
+|🟠|`onDrop()`|*|
+|🟢|`onLongTap()`|`Button`|
+|🟢|`onTap()`|`Button`|
+|🟢|`opacity()`|*|
+|🔴|`overlay()`|*|
+|🟢|`padding()`|*|
+|🔴|`popover()`|*|
+|🟢|`rotate()`|*|
+|🟢|`scale()`|*|
+|🟢|`semantic()`|`Icon`|
+|🟠|`shadow()`|*|
+|🔴|`sheet()`|*|
+|🟢|`style()`|`Text`, `TextField`|
+|🟢|`transform()`|*|
+|🟢|`translate()`|*|
 
 |_|Legend|
 |-|-|
-|✅|implemented|
-|❌|work in progress|
-|*|supported on all widgets|
+|🟢|*Implemented*|
+|🟡|*Implemented, but subject to change*|
+|🟠|*Work in progress*|
+|🔴|*Not yet implemented*|
+|* |*Available on all types*|
+
+
+## Technical notes
+
+View modifiers work by telling the widget to wrap itself in another widget and then returning itself to the caller.
+
+### Modifier chain
+
+A modifier chain is a sequence of modifiers on a view.
+
+### Type handover
+
+Type handover is the technique of not wrapping widgets of the same class in each other if they are subsequent to each other.
+
+So if the modifier chain looks like this:
+
+`[ Center > Container > Container > Container > Text > Text ]`
+
+FlutterUI will render the view hierarch like this:
+
+`[ Center > Container > Text ]`
+
+This makes sure that the view hierarchy doesn't become more complex than necessary.

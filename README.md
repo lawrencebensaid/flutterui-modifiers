@@ -69,44 +69,44 @@ Please note that some view modifiers are specific to widgets like `Text()` or va
 
 |Status|Modifier|Widget(s)|
 |-|-|-|
-|🟢|`align()`|*|
-|🟢|`aspectRatio()`|*|
-|🟢|`assign()`|*|
-|🟢|`centered()`|*|
-|🔴|`controlSize()`|`Button`, `TextField`|
-|🟠|`background()`|*|
-|🟡|`backgroundColor()`|*|
-|🟠|`border()`|*|
-|🟡|`clipOval()`|*|
-|🟡|`clipPath()`|*|
-|🟡|`clipRect()`|*|
-|🟠|`clip()`|*|
-|🟢|`color()`|`Text`|
-|🟢|`corner()`|*|
-|🟢|`decorate()`|`Container`|
-|🟢|`direction()`|`Icon`, `Text`|
-|🟢|`disabled()`|`Button`|
-|🟢|`font()`|`Icon`, `Text`|
-|🟢|`frame()`|*|
-|🔴|`help()`|*|
-|🟢|`margin()`|*|
-|🟢|`multilineTextAlignment()`|`Text`|
-|🟠|`onDrag()`|*|
-|🟠|`onDrop()`|*|
-|🟢|`onLongTap()`|`Button`|
-|🟢|`onTap()`|`Button`|
-|🟢|`opacity()`|*|
-|🔴|`overlay()`|*|
-|🟢|`padding()`|*|
-|🔴|`popover()`|*|
-|🟢|`rotate()`|*|
-|🟢|`scale()`|*|
-|🟢|`semantic()`|`Icon`|
-|🟠|`shadow()`|*|
-|🔴|`sheet()`|*|
-|🟢|`style()`|`Text`, `TextField`|
-|🟢|`transform()`|*|
-|🟢|`translate()`|*|
+|🟢|`.align()`|*|
+|🟢|`.aspectRatio()`|*|
+|🟢|`.assign()`|*|
+|🟢|`.centered()`|*|
+|🔴|`.controlSize()`|`Button`, `TextField`|
+|🟠|`.background()`|*|
+|🟡|`.backgroundColor()`|*|
+|🟠|`.border()`|*|
+|🟡|`.clipOval()`|*|
+|🟡|`.clipPath()`|*|
+|🟡|`.clipRect()`|*|
+|🟠|`.clip()`|*|
+|🟢|`.color()`|`Text`|
+|🟢|`.corner()`|*|
+|🟢|`.decorate()`|`Container`|
+|🟢|`.direction()`|`Icon`, `Text`|
+|🟢|`.disabled()`|`Button`|
+|🟢|`.font()`|`Icon`, `Text`|
+|🟢|`.frame()`|*|
+|🔴|`.help()`|*|
+|🟢|`.margin()`|*|
+|🟢|`.multilineTextAlignment()`|`Text`|
+|🟠|`.onDrag()`|*|
+|🟠|`.onDrop()`|*|
+|🟢|`.onLongTap()`|`Button`|
+|🟢|`.onTap()`|`Button`|
+|🟢|`.opacity()`|*|
+|🔴|`.overlay()`|*|
+|🟢|`.padding()`|*|
+|🔴|`.popover()`|*|
+|🟢|`.rotate()`|*|
+|🟢|`.scale()`|*|
+|🟢|`.semantic()`|`Icon`|
+|🟠|`.shadow()`|*|
+|🔴|`.sheet()`|*|
+|🟡|`.style()`|`Text`, `TextField`|
+|🟢|`.transform()`|*|
+|🟢|`.translate()`|*|
 
 |_|Legend|
 |-|-|

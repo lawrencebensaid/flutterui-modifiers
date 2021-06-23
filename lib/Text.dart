@@ -5,6 +5,18 @@ import 'package:flutter/material.dart';
 import 'TextStyle.dart';
 
 extension FlutterUIModifiersText on Text {
+  /// A modifier that sets its Text's font to bold.
+  ///
+  /// ## Example:
+  ///
+  /// ```dart
+  /// Text('Hello, World!')
+  ///     .bold();
+  /// ```
+  Text bold() {
+    return this.font(weight: FontWeight.bold);
+  }
+
   /// A modifier that sets its Text's color.
   ///
   /// ## Example:

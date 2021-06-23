@@ -128,14 +128,35 @@ extension FlutterUIModifiersWidget on Widget {
 
   /// A modifier that clips its widget's corners to the specified radius.
   ///
-  /// ## Example
+  /// ## Example:
   ///
   /// ```dart
   /// Icon(Icons.person)
   ///     .corner(12);
   /// ```
   Widget corner(double radius) {
-    return ClipRRect(child: this, borderRadius: BorderRadius.circular(radius));
+    if (this is Container) {
+      return (this as Container).corner(radius);
+    }
+    return Container(
+      child: this,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(radius),
+      ),
+    );
+  }
+
+  /// A modifier that wraps its widget in an [Expanded] view.
+  ///
+  /// ## Example:
+  ///
+  /// ```dart
+  /// Icon(Icons.person)
+  ///     .flex(1);
+  /// ```
+  Widget flex(int? flex) {
+    return Expanded(child: this, flex: flex ?? 1);
   }
 
   /// A modifier that sets its widget's frame size.
@@ -235,6 +256,18 @@ extension FlutterUIModifiersWidget on Widget {
     _trailing += horizontal ?? 0;
     _top += vertical ?? 0;
     _bottom += vertical ?? 0;
+    if (all == null &&
+        top == null &&
+        bottom == null &&
+        leading == null &&
+        trailing == null &&
+        horizontal == null &&
+        vertical == null) {
+      _top = 12;
+      _bottom = 12;
+      _leading = 12;
+      _trailing = 12;
+    }
     final insets = EdgeInsets.only(
       top: _top,
       bottom: _bottom,
@@ -294,6 +327,39 @@ extension FlutterUIModifiersWidget on Widget {
     );
   }
 
+  /// A modifier that sets its widget's frame size.
+  ///
+  /// ## Example:
+  ///
+  /// ```dart
+  /// Icon(Icons.person)
+  ///     .shadow(4, color: Colors.grey);
+  /// ```
+  Widget shadow(
+    double radius, {
+    Color color = const Color.fromRGBO(0, 0, 0, .5),
+    double blur = 25,
+    double x = 0,
+    double y = 0,
+  }) {
+    if (this is Container) {
+      return (this as Container).shadow(radius, blur: blur, x: x, y: y);
+    }
+    return Container(
+      child: this,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: color,
+            spreadRadius: radius,
+            blurRadius: blur,
+            offset: Offset(x, y),
+          ),
+        ],
+      ),
+    );
+  }
+
   /// A modifier that transforms its widget.
   Transform transform(
     Matrix4 transform, {
@@ -310,11 +376,18 @@ extension FlutterUIModifiersWidget on Widget {
     );
   }
 
-  /// A modifier that translates its widget.
-  Transform translate(Offset offset, {bool transformHitTests = true}) {
+  /// A modifier that translates its widget to the specified offset.
+  ///
+  /// ## Example:
+  ///
+  /// ```dart
+  /// Icon(Icons.person)
+  ///     .offset(x: 12, y: 12);
+  /// ```
+  Widget offset({double x = 0, double y = 0, bool transformHitTests = true}) {
     return Transform.translate(
       child: this,
-      offset: offset,
+      offset: Offset(x, y),
       transformHitTests: transformHitTests,
     );
   }
@@ -349,6 +422,27 @@ extension FlutterUIModifiersContainer on Container {
     return _rebase(decoration: decoration);
   }
 
+  /// A modifier that clips its widget's corners to the specified radius.
+  ///
+  /// ## Example:
+  ///
+  /// ```dart
+  /// Icon(Icons.person)
+  ///     .corner(12);
+  /// ```
+  Container corner(double radius) {
+    var border = BorderRadius.circular(radius);
+    var decoration = BoxDecoration(borderRadius: border);
+    if (this.decoration is BoxDecoration) {
+      decoration =
+          (this.decoration as BoxDecoration).rebase(borderRadius: border);
+    }
+    return _rebase(
+      decoration: decoration,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+    );
+  }
+
   /// A modifier that sets its widget's frame size.
   ///
   /// ## Example:
@@ -359,6 +453,41 @@ extension FlutterUIModifiersContainer on Container {
   /// ```
   Container frame({double? width, double? height}) {
     return _rebase(width: width, height: height);
+  }
+
+  /// A modifier that casts a box shadow under its widget.
+  ///
+  /// `.shadow()` can cast non-rectangular shadows if the box is non-rectangular
+  /// (e.g., has a border radius or a circular shape).
+  ///
+  /// This modifier is similar to CSS box-shadow.
+  ///
+  /// ## Example:
+  ///
+  /// ```dart
+  /// Icon(Icons.person)
+  ///     .shadow(4, blur: 40);
+  /// ```
+  Widget shadow(
+    double radius, {
+    Color color = const Color.fromRGBO(0, 0, 0, .5),
+    double blur = 25,
+    double x = 0,
+    double y = 0,
+  }) {
+    var shadow = BoxShadow(
+      color: color,
+      spreadRadius: radius,
+      blurRadius: blur,
+      offset: Offset(x, y),
+    );
+    var decoration = BoxDecoration(boxShadow: [shadow]);
+    if (this.decoration is BoxDecoration) {
+      decoration = (this.decoration as BoxDecoration).rebase(
+        boxShadow: [shadow],
+      );
+    }
+    return _rebase(decoration: decoration);
   }
 
   /// Internal modifier for modifying final properties.
@@ -391,6 +520,31 @@ extension FlutterUIModifiersContainer on Container {
       transformAlignment: transformAlignment ?? this.transformAlignment,
       child: this.child,
       clipBehavior: clipBehavior ?? this.clipBehavior,
+    );
+  }
+}
+
+extension FlutterUIBoxDecoration on BoxDecoration {
+  /// Internal modifier for modifying final properties.
+  BoxDecoration rebase({
+    Color? color,
+    DecorationImage? image,
+    BoxBorder? border,
+    BorderRadiusGeometry? borderRadius,
+    List<BoxShadow>? boxShadow,
+    Gradient? gradient,
+    BlendMode? backgroundBlendMode,
+    BoxShape? shape,
+  }) {
+    return BoxDecoration(
+      color: color ?? this.color,
+      image: image ?? this.image,
+      border: border ?? this.border,
+      borderRadius: borderRadius ?? this.borderRadius,
+      boxShadow: boxShadow ?? this.boxShadow,
+      gradient: gradient ?? this.gradient,
+      backgroundBlendMode: backgroundBlendMode ?? this.backgroundBlendMode,
+      shape: shape ?? this.shape,
     );
   }
 }

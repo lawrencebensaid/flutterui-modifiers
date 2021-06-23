@@ -76,6 +76,7 @@ Please note that some view modifiers are specific to widgets like `Text()` or va
 |🔴|`.controlSize()`|`Button`, `TextField`|
 |🟠|`.background()`|*|
 |🟡|`.backgroundColor()`|*|
+|🟢|`.bold()`|`Text`|
 |🟠|`.border()`|*|
 |🟡|`.clipOval()`|*|
 |🟡|`.clipPath()`|*|
@@ -86,11 +87,13 @@ Please note that some view modifiers are specific to widgets like `Text()` or va
 |🟢|`.decorate()`|`Container`|
 |🟢|`.direction()`|`Icon`, `Text`|
 |🟢|`.disabled()`|`Button`|
+|🟡|`.flex()`|*|
 |🟢|`.font()`|`Icon`, `Text`|
 |🟢|`.frame()`|*|
 |🔴|`.help()`|*|
 |🟢|`.margin()`|*|
 |🟢|`.multilineTextAlignment()`|`Text`|
+|🟢|`.offset()`|*|
 |🟠|`.onDrag()`|*|
 |🟠|`.onDrop()`|*|
 |🟢|`.onLongTap()`|`Button`|
@@ -102,11 +105,10 @@ Please note that some view modifiers are specific to widgets like `Text()` or va
 |🟢|`.rotate()`|*|
 |🟢|`.scale()`|*|
 |🟢|`.semantic()`|`Icon`|
-|🟠|`.shadow()`|*|
+|🟢|`.shadow()`|*|
 |🔴|`.sheet()`|*|
 |🟡|`.style()`|`Text`, `TextField`|
 |🟢|`.transform()`|*|
-|🟢|`.translate()`|*|
 
 |_|Legend|
 |-|-|

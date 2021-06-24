@@ -31,9 +31,10 @@ With FlutterUI Modifiers, write this:
 ```dart
 List<Widget> list = [];
 
-Text('Hello, World! 🌍')
+Text('Hello, World!') //
+    .bold()
     .font(size: 22)
-    .color(Colors.red)
+    .help('We love you 🌍')
     .padding(all: 16)
     .centered()
     .assign(list);
@@ -48,13 +49,16 @@ list.add(
   Center(
     child: Padding(
       padding: EdgeInsets.all(16.0),
-      child: Text(
-        'Hello, World! 🌍',
-        style: TextStyle(
-          color: Colors.red,
-          fontSize: 22,
-        ), // TextStyle
-      ), // Text
+      child: Tooltip(
+        message: 'We love you 🌍',
+        child: Text(
+          'Hello, World!',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+          ), // TextStyle
+        ), // Text
+      ), // Tooltip
     ) // Padding
   ), // Center
 );
@@ -84,31 +88,33 @@ Please note that some view modifiers are specific to widgets like `Text()` or va
 |🟠|`.clip()`|*|
 |🟢|`.color()`|`Text`|
 |🟢|`.corner()`|*|
-|🟢|`.decorate()`|`Container`|
 |🟢|`.direction()`|`Icon`, `Text`|
 |🟢|`.disabled()`|`Button`|
 |🟡|`.flex()`|*|
 |🟢|`.font()`|`Icon`, `Text`|
 |🟢|`.frame()`|*|
-|🔴|`.help()`|*|
+|🟢|`.help()`|*|
+|🟡|`.hideThumb()`|`ListView`|
 |🟢|`.margin()`|*|
 |🟢|`.multilineTextAlignment()`|`Text`|
 |🟢|`.offset()`|*|
 |🟠|`.onDrag()`|*|
 |🟠|`.onDrop()`|*|
-|🟢|`.onLongTap()`|`Button`|
-|🟢|`.onTap()`|`Button`|
+|🟠|`.onDoubleTap()`|*|
+|🟢|`.onHover()`|*|
+|🟡|`.onLongTap()`|`Button`|
+|🟡|`.onTap()`|`Button`|
 |🟢|`.opacity()`|*|
-|🔴|`.overlay()`|*|
+|🟠|`.overlay()`|*|
 |🟢|`.padding()`|*|
 |🔴|`.popover()`|*|
 |🟢|`.rotate()`|*|
-|🟢|`.scale()`|*|
+|🟡|`.scale()`|*|
 |🟢|`.semantic()`|`Icon`|
 |🟢|`.shadow()`|*|
 |🔴|`.sheet()`|*|
 |🟡|`.style()`|`Text`, `TextField`|
-|🟢|`.transform()`|*|
+|🟡|`.transform()`|*|
 
 |_|Legend|
 |-|-|

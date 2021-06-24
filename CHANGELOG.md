@@ -1,3 +1,20 @@
+## 0.3.0
+
+**Added new modifiers to existing Widgets**
+
+* Added `.help()` to all widgets
+* Added `.hideThumb()` to `ListView`
+* Added `.onHover()` to all widgets
+
+**Removed modifier**
+
+* Removed `.decorate()`
+
+**General**
+
+* Improvements
+* Optimisations
+
 ## 0.2.0
 
 **Added new modifiers to existing Widgets**

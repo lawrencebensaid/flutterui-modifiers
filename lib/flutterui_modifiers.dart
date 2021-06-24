@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 export 'Button.dart';
 export 'Icon.dart';
+export 'ListView.dart';
 export 'Text.dart';
 export 'TextField.dart';
 
@@ -74,8 +75,8 @@ extension FlutterUIModifiersWidget on Widget {
   /// Text('Black text')
   ///     .backgroundColor(Colors.white)
   ///```
-  Widget backgroundColor(Color? color) {
-    if (this is Container) {
+  Widget backgroundColor(Color color, {bool handover = true}) {
+    if (handover && this is Container) {
       return (this as Container).backgroundColor(color);
     }
     return Container(child: this, color: color);
@@ -134,8 +135,8 @@ extension FlutterUIModifiersWidget on Widget {
   /// Icon(Icons.person)
   ///     .corner(12);
   /// ```
-  Widget corner(double radius) {
-    if (this is Container) {
+  Widget corner(double radius, {bool handover = true}) {
+    if (handover && this is Container) {
       return (this as Container).corner(radius);
     }
     return Container(
@@ -167,11 +168,25 @@ extension FlutterUIModifiersWidget on Widget {
   /// Icon(Icons.person)
   ///     .frame(width: 50, height: 25);
   /// ```
-  Widget frame({double? width, double? height}) {
-    if (this is Container) {
+  Widget frame({double? width, double? height, bool handover = true}) {
+    if (handover && this is Container) {
       return (this as Container).frame(width: width, height: height);
     }
     return Container(child: this, width: width, height: height);
+  }
+
+  /// A modifier that sets its widget's frame size.
+  ///
+  /// ## Example:
+  ///
+  /// ```dart
+  /// Icon(Icons.settings)
+  ///     .help('App settings');
+  /// ```
+  Widget help(String? text, {bool? below}) {
+    return text == null
+        ? this
+        : Tooltip(child: this, message: text, preferBelow: below);
   }
 
   /// A modifier that insets margin around its widget by the given value(s).
@@ -195,26 +210,18 @@ extension FlutterUIModifiersWidget on Widget {
     double? trailing,
     double? horizontal,
     double? vertical,
+    bool handover = true,
   }) {
-    double _top = top ?? 0;
-    double _bottom = bottom ?? 0;
-    double _leading = leading ?? 0;
-    double _trailing = trailing ?? 0;
-    _top += all ?? 0;
-    _bottom += all ?? 0;
-    _leading += all ?? 0;
-    _trailing += all ?? 0;
-    _leading += horizontal ?? 0;
-    _trailing += horizontal ?? 0;
-    _top += vertical ?? 0;
-    _bottom += vertical ?? 0;
-    final insets = EdgeInsets.only(
-      top: _top,
-      bottom: _bottom,
-      left: _leading,
-      right: _trailing,
+    final insets = _insets(
+      all: all,
+      top: top,
+      bottom: bottom,
+      leading: leading,
+      trailing: trailing,
+      horizontal: horizontal,
+      vertical: vertical,
     );
-    if (this is Container) {
+    if (handover && this is Container) {
       return (this as Container)._rebase(margin: insets);
     }
     return Container(child: this, margin: insets);
@@ -243,41 +250,38 @@ extension FlutterUIModifiersWidget on Widget {
     double? trailing,
     double? horizontal,
     double? vertical,
+    bool handover = true,
   }) {
-    double _top = top ?? 0;
-    double _bottom = bottom ?? 0;
-    double _leading = leading ?? 0;
-    double _trailing = trailing ?? 0;
-    _top += all ?? 0;
-    _bottom += all ?? 0;
-    _leading += all ?? 0;
-    _trailing += all ?? 0;
-    _leading += horizontal ?? 0;
-    _trailing += horizontal ?? 0;
-    _top += vertical ?? 0;
-    _bottom += vertical ?? 0;
-    if (all == null &&
-        top == null &&
-        bottom == null &&
-        leading == null &&
-        trailing == null &&
-        horizontal == null &&
-        vertical == null) {
-      _top = 12;
-      _bottom = 12;
-      _leading = 12;
-      _trailing = 12;
-    }
-    final insets = EdgeInsets.only(
-      top: _top,
-      bottom: _bottom,
-      left: _leading,
-      right: _trailing,
+    final insets = _insets(
+      all: all,
+      top: top,
+      bottom: bottom,
+      leading: leading,
+      trailing: trailing,
+      horizontal: horizontal,
+      vertical: vertical,
     );
-    if (this is Container) {
+    if (handover && this is Container) {
       return (this as Container)._rebase(padding: insets);
     }
     return Padding(child: this, padding: insets);
+  }
+
+  /// A modifier that makes its widget (partially) transparent.
+  ///
+  /// ## Example:
+  ///
+  /// ```dart
+  /// bool hovering = false;
+  ///
+  /// Text('Whoosh!')
+  ///     .onHover((state) => hovering = state));
+  /// ```
+  Widget onHover(void Function(bool) event, {bool handover = true}) {
+    if (handover && this is InkWell) {
+      // return (this as InkWell)._rebase(onHover: event);
+    }
+    return InkWell(child: this, onHover: event, onTap: () => null);
   }
 
   /// A modifier that makes its widget (partially) transparent.
@@ -341,8 +345,9 @@ extension FlutterUIModifiersWidget on Widget {
     double blur = 25,
     double x = 0,
     double y = 0,
+    bool handover = true,
   }) {
-    if (this is Container) {
+    if (handover && this is Container) {
       return (this as Container).shadow(radius, blur: blur, x: x, y: y);
     }
     return Container(
@@ -391,6 +396,48 @@ extension FlutterUIModifiersWidget on Widget {
       transformHitTests: transformHitTests,
     );
   }
+
+  /// Internal modifier for composing edge insets in a proper manner.
+  EdgeInsets _insets({
+    double? all,
+    double? top,
+    double? bottom,
+    double? leading,
+    double? trailing,
+    double? horizontal,
+    double? vertical,
+  }) {
+    double _top = top ?? 0;
+    double _bottom = bottom ?? 0;
+    double _leading = leading ?? 0;
+    double _trailing = trailing ?? 0;
+    _top += all ?? 0;
+    _bottom += all ?? 0;
+    _leading += all ?? 0;
+    _trailing += all ?? 0;
+    _leading += horizontal ?? 0;
+    _trailing += horizontal ?? 0;
+    _top += vertical ?? 0;
+    _bottom += vertical ?? 0;
+    if (all == null &&
+        top == null &&
+        bottom == null &&
+        leading == null &&
+        trailing == null &&
+        horizontal == null &&
+        vertical == null) {
+      _top = 12;
+      _bottom = 12;
+      _leading = 12;
+      _trailing = 12;
+    }
+    return EdgeInsets.only(
+      top: _top,
+      bottom: _bottom,
+      left: _leading,
+      right: _trailing,
+    );
+  }
 }
 
 /// Contains the modifier members of the [Container] class.
@@ -406,20 +453,8 @@ extension FlutterUIModifiersContainer on Container {
   /// Text('Black text')
   ///     .backgroundColor(Colors.white)
   ///```
-  Container backgroundColor(Color? color) {
+  Container backgroundColor(Color color) {
     return _rebase(color: color);
-  }
-
-  /// A modifier that clips its widget's corners to the specified radius.
-  ///
-  /// ## Example
-  ///
-  /// ```dart
-  /// Icon(Icons.person)
-  ///     .corner(12);
-  /// ```
-  Container decorate(Decoration? decoration) {
-    return _rebase(decoration: decoration);
   }
 
   /// A modifier that clips its widget's corners to the specified radius.

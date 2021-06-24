@@ -103,7 +103,7 @@ Please note that some view modifiers are specific to widgets like `Text()` or va
 |🟠|`.onDoubleTap()`|*|
 |🟢|`.onHover()`|*|
 |🟡|`.onLongTap()`|`Button`|
-|🟡|`.onTap()`|`Button`|
+|🟢|`.onTap()`|*|
 |🟢|`.opacity()`|*|
 |🟠|`.overlay()`|*|
 |🟢|`.padding()`|*|

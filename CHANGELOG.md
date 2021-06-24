@@ -1,3 +1,14 @@
+## 0.3.1
+
+**Extended existing modifier to support all Widgets**
+
+* Extended `.onTap()` to all widgets
+
+**Improved modifiers**
+
+* Implemented Type Handover in `.onTap()`
+* Implemented Type Handover in `.onHover()`
+
 ## 0.3.0
 
 **Added new modifiers to existing Widgets**

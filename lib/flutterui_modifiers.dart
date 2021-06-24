@@ -279,9 +279,30 @@ extension FlutterUIModifiersWidget on Widget {
   /// ```
   Widget onHover(void Function(bool) event, {bool handover = true}) {
     if (handover && this is InkWell) {
-      // return (this as InkWell)._rebase(onHover: event);
+      if ((this as InkWell).onTap == null) {
+        return (this as InkWell).rebase(onHover: event, onTap: () => null);
+      } else {
+        return (this as InkWell).rebase(onHover: event);
+      }
     }
     return InkWell(child: this, onHover: event, onTap: () => null);
+  }
+
+  /// A modifier that makes its widget (partially) transparent.
+  ///
+  /// ## Example:
+  ///
+  /// ```dart
+  /// bool hovering = false;
+  ///
+  /// Text('Tap! tap!')
+  ///     .onTap(() {}));
+  /// ```
+  Widget onTap(void Function() event, {bool handover = true}) {
+    if (handover && this is InkWell) {
+      return (this as InkWell).rebase(onTap: event);
+    }
+    return InkWell(child: this, onTap: event);
   }
 
   /// A modifier that makes its widget (partially) transparent.
@@ -555,6 +576,64 @@ extension FlutterUIModifiersContainer on Container {
       transformAlignment: transformAlignment ?? this.transformAlignment,
       child: this.child,
       clipBehavior: clipBehavior ?? this.clipBehavior,
+    );
+  }
+}
+
+extension FlutterUIInkWell on InkWell {
+  /// Internal modifier for modifying final properties.
+  InkWell rebase({
+    Widget? child,
+    GestureTapCallback? onTap,
+    GestureTapCallback? onDoubleTap,
+    GestureLongPressCallback? onLongPress,
+    GestureTapDownCallback? onTapDown,
+    GestureTapCancelCallback? onTapCancel,
+    ValueChanged<bool>? onHighlightChanged,
+    ValueChanged<bool>? onHover,
+    MouseCursor? mouseCursor,
+    Color? focusColor,
+    Color? hoverColor,
+    Color? highlightColor,
+    MaterialStateProperty<Color?>? overlayColor,
+    Color? splashColor,
+    InteractiveInkFeatureFactory? splashFactory,
+    double? radius,
+    BorderRadius? borderRadius,
+    ShapeBorder? customBorder,
+    bool? enableFeedback,
+    bool? excludeFromSemantics,
+    FocusNode? focusNode,
+    bool? canRequestFocus,
+    ValueChanged<bool>? onFocusChange,
+    bool? autofocus,
+  }) {
+    return InkWell(
+      key: this.key,
+      child: child ?? this.child,
+      onTap: onTap ?? this.onTap,
+      onDoubleTap: onDoubleTap ?? this.onDoubleTap,
+      onLongPress: onLongPress ?? this.onLongPress,
+      onTapDown: onTapDown ?? this.onTapDown,
+      onTapCancel: onTapCancel ?? this.onTapCancel,
+      onHighlightChanged: onHighlightChanged ?? this.onHighlightChanged,
+      onHover: onHover ?? this.onHover,
+      mouseCursor: mouseCursor ?? this.mouseCursor,
+      focusColor: focusColor ?? this.focusColor,
+      hoverColor: hoverColor ?? this.hoverColor,
+      highlightColor: highlightColor ?? this.highlightColor,
+      overlayColor: overlayColor ?? this.overlayColor,
+      splashColor: splashColor ?? this.splashColor,
+      splashFactory: splashFactory ?? this.splashFactory,
+      radius: radius ?? this.radius,
+      borderRadius: borderRadius ?? this.borderRadius,
+      customBorder: customBorder ?? this.customBorder,
+      enableFeedback: enableFeedback ?? this.enableFeedback,
+      excludeFromSemantics: excludeFromSemantics ?? this.excludeFromSemantics,
+      focusNode: focusNode ?? this.focusNode,
+      canRequestFocus: canRequestFocus ?? this.canRequestFocus,
+      onFocusChange: onFocusChange ?? this.onFocusChange,
+      autofocus: autofocus ?? this.autofocus,
     );
   }
 }
